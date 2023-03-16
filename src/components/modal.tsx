@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { CloseIcon } from "./icons";
 import Overlay from "./overlay";
 
@@ -46,7 +46,7 @@ interface ModalProps {
   title: string;
 }
 
-export default (props: ModalProps) => (
+const Modal = (props: ModalProps) => (
   <Overlay show={props.show} onClick={props.onClose}>
     <ModalBox className={ props.show ? 'active' : '' }>
       <ModalClose>
@@ -63,3 +63,5 @@ export default (props: ModalProps) => (
    </ModalBox>
   </Overlay>
 );
+
+export default Modal;

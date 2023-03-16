@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { CloseIcon } from "./icons";
 import { NavBar, NavBarItemNotifications, NavBarItemUser, NavBarRight } from "./nav_bar";
 import Overlay from "./overlay";
@@ -9,7 +9,7 @@ interface MainMenuProps {
   show: boolean;
 }
 
-const MainMenu = styled.div`
+const MainMenuWrapper = styled.div`
   background: rgba(36, 36, 36, 0.9);
   box-shadow: 0 0 1px 1px rgba(0,0,0,0.5);
   height: 100%;
@@ -41,9 +41,9 @@ const MainMenuItem = styled.div`
   margin: 40px 0 40px 88px;
 `;
 
-export default (props: MainMenuProps) => (
+const MainMenu = (props: MainMenuProps) => (
   <Overlay show={props.show} onClick={props.onClose}>
-    <MainMenu className={props.show ? 'active' : ''}>
+    <MainMenuWrapper className={props.show ? 'active' : ''}>
       <NavBar>
         <Link href="#" onClick={props.onClose}>
           <CloseIcon />
@@ -93,6 +93,8 @@ export default (props: MainMenuProps) => (
           CERRAR SESIÓN
         </Link>
       </MainMenuItem>
-    </MainMenu>
+    </MainMenuWrapper>
   </Overlay>
 );
+
+export default MainMenu;

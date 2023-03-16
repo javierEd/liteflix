@@ -453,7 +453,7 @@ export default function Home() {
           </Dropdown>
 
           {popularMovies?.slice(0, 4).map((movie) => (
-            <MovieCard backgroundImage={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}>
+            <MovieCard key={movie.id} backgroundImage={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}>
               <MovieCardCircle className='unselected'>
                 <PlayCircleIcon />
               </MovieCardCircle>

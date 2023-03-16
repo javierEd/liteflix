@@ -7,7 +7,7 @@ interface OverlayProps {
   show: boolean;
 }
 
-const Overlay = styled.div`
+const OverlayWrapper = styled.div`
   background: rgba(36, 36, 36, 0.0);
   bottom: 0;
   left: 0;
@@ -25,16 +25,18 @@ const Overlay = styled.div`
   }
 `;
 
-export default (props: OverlayProps) => {
+const Overlay = (props: OverlayProps) => {
   const overlayRef = useRef(null);
 
   return (
-    <Overlay
+    <OverlayWrapper
       ref={overlayRef}
       className={ props.show ? 'active' : '' }
       onClick={(event) => { if (props.onClick && overlayRef.current == event.target) { props.onClick(event); } }}
     >
       {props.children}
-    </Overlay>
+    </OverlayWrapper>
   );
 }
+
+export default Overlay;
