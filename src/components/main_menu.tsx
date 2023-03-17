@@ -1,11 +1,12 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { CloseIcon } from "./icons";
+import { CloseIcon, PlusIcon } from "./icons";
 import { NavBar, NavBarItemNotifications, NavBarItemUser, NavBarRight } from "./nav_bar";
 import Overlay from "./overlay";
 
 interface MainMenuProps {
-  onClose?: () => void;
+  onClickAddMovie: () => void;
+  onClose: () => void;
   show: boolean;
 }
 
@@ -32,13 +33,18 @@ const MainMenuWrapper = styled.div`
 
 const MainMenuItem = styled.div` 
   color: #FFFFFF;
-  font-family: 'Bebas Neue';
-  font-style: normal;
-  font-weight: 400;
+  cursor: pointer;
   font-size: 22px;
-  letter-spacing: 4px;
   line-height: 22px;
   margin: 40px 0 40px 88px;
+
+  &.add-movie {
+    margin: 72px 0 72px 88px;
+  }
+`;
+
+const Plus = styled.span`
+  margin-right: 16px;
 `;
 
 const MainMenu = (props: MainMenuProps) => (
@@ -54,44 +60,34 @@ const MainMenu = (props: MainMenuProps) => (
         </NavBarRight>
       </NavBar>
       <MainMenuItem>
-        <Link href="#">
           INICIO
-        </Link>
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           SERIES
-        </Link>
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           PELICULAS
-        </Link>
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           AGREGADAS RECIENTEMENTE
-        </Link>
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           POPULARES
-        </Link>
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           MIS PELÍCULAS
-        </Link>
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           MI LISTA
-        </Link>
+      </MainMenuItem>
+      <MainMenuItem className="add-movie" onClick={props.onClickAddMovie}>
+        <Plus>
+          <PlusIcon />
+        </Plus>
+        AGREGAR PELÍCULA
       </MainMenuItem>
       <MainMenuItem>
-        <Link href="#">
           CERRAR SESIÓN
-        </Link>
       </MainMenuItem>
     </MainMenuWrapper>
   </Overlay>

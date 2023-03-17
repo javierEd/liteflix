@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styled from "styled-components";
 import { BellIcon } from "./icons";
 
@@ -17,6 +16,7 @@ export const NavBar = styled.div`
 
 export const NavBarItem = styled.div`
   color: #FFFFFF;
+  cursor: pointer;
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
@@ -27,17 +27,13 @@ export const NavBarItem = styled.div`
 
 export const NavBarItemNotifications = () => (
   <NavBarItem>
-    <Link href="#">
-      <BellIcon />
-    </Link>
+    <BellIcon />
   </NavBarItem>
 );
 
 export const NavBarItemUser = () => (
   <NavBarItem>
-    <Link href="#">
-      <Circle />
-    </Link>
+    <Circle />
   </NavBarItem>
 );
 

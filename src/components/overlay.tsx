@@ -1,5 +1,5 @@
 import { MouseEventHandler, ReactNode, useRef } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 interface OverlayProps {
   children?: ReactNode;
@@ -8,19 +8,19 @@ interface OverlayProps {
 }
 
 const OverlayWrapper = styled.div`
-  background: rgba(36, 36, 36, 0.0);
+  background-color: rgba(36, 36, 36, 0.0);
   bottom: 0;
   left: 0;
   position: fixed;
   right: 0;
   top: 0;
-  transition: z-index 0s 0.3s, background 0.3s;
+  transition: z-index 0s 0.3s, background-color 0.3s;
   z-index: -1;
 
   &.active {
-    background: rgba(36, 36, 36, 0.7);
+    background-color: rgba(36, 36, 36, 0.7);
     overflow: auto;
-    transition: z-index 0s, background 0.3s;
+    transition: z-index 0s, background-color 0.3s;
     z-index: 0;
   }
 `;
