@@ -273,9 +273,12 @@ export default function Home() {
     document.onkeydown = (event) => {
       const key = event.key.toLowerCase();
 
+
+      console.log(currentComponent);
+
       if (currentComponent == null) {
-        if (['a', 'h', 'm', 'p'].includes(key)) {
-          setCurrentComponent(key as 'a' | 'h' | 'm' | 'p');
+        if (['a', 'h', 'm'].includes(key)) {
+          setCurrentComponent(key as 'a' | 'h' | 'm');
         } else if (key == 'p') {
           openPlayModal(featuredMovie);
         } else if (key == 'arrowdown' && currentCard < 3) {
@@ -288,11 +291,10 @@ export default function Home() {
           setCurrentCard(-1);
         }
       } else if (key == 'escape') {
+        setCurrentCard(-1);
         setCurrentComponent(null);
         setCurrentVideo(null);
       }
- 
-      console.log(event.key);
     };
 
     if (currentComponent != null) {
@@ -323,6 +325,7 @@ export default function Home() {
   }, []);
 
   const openPlayModal = (movie: MovieProps | null) => {
+    console.log(movie);
     if (!movie) { return; }
 
     fetch(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=6f26fd536dd6192ec8a57e94141f8b20`)
