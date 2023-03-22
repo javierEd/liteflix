@@ -21,7 +21,7 @@ export interface VideoProps {
 interface PlayMovieModalProps {
   onClose: () => void;
   show: boolean;
-  video: VideoProps | null;
+  video?: VideoProps;
 }
 
 const PlayMovieModal = (props: PlayMovieModalProps) => (
@@ -30,10 +30,9 @@ const PlayMovieModal = (props: PlayMovieModalProps) => (
       NO TENGO LOS DERECHOS DE TRANSMISIÓN &#128546;
     </PlayDescription>
     <PlayDescription>
-      TENDRÁS QUE CONFORMARTE CON UN TRAILER &#128517;
+      TENDRÁS QUE CONFORMARTE CON ESTE {props.video?.type} &#128517;
     </PlayDescription>
-    <PlayIframe src={`https://www.youtube.com/embed/${props.video?.key}?autoplay=1`}>
-    </PlayIframe> 
+    <PlayIframe src={typeof props.video !== 'undefined' ? `https://www.youtube.com/embed/${props.video.key}?autoplay=1` : ''} />
   </Modal>
 );
 

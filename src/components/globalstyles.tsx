@@ -1,5 +1,13 @@
 import { createGlobalStyle } from 'styled-components'
 
+export const classNameVisible = (isVisible: boolean) => {
+  if (isVisible) {
+    return 'visible';
+  }
+
+  return 'hidden';
+};
+
 export default createGlobalStyle`
   body {
     background-color: #000000;
@@ -10,7 +18,12 @@ export default createGlobalStyle`
     margin: 0;
     font-family: Bebas Neue;
     letter-spacing: 4px;
-    transition: background-image 0.5s;
+    transition: background-image 0.3s;
+
+    > #__next {
+      background-color: rgba(0, 0, 0, 0.35);
+      padding: 32px 100px;
+    }
   }
 
   a {
@@ -20,5 +33,17 @@ export default createGlobalStyle`
 
   * {
     box-sizing: border-box;
+  }
+
+  .hidden {
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s;
+    visibility: hidden;
+  }
+
+  .visible {
+    opacity: 1;
+    transition: visibility 0s, opacity 0.3s;
+    visibility: visible;
   }
 `

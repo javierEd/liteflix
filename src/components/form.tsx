@@ -3,22 +3,25 @@ import styled from "styled-components";
 const Form = styled.form`
   text-align: center;
 
+  input {
+    font-family: 'Bebas Neue';
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 4px;
+  }
+
   > * {
     display: block;
-    margin: 36px auto;
+    margin: 0 auto 36px;
 
     > input[type=text], > input[type=text]:hover {
       background: none;
       border: none;
       border-bottom: 1px solid #FFFFFF;
       color: #FFFFFF;
-      font-family: 'Bebas Neue';
-      font-style: normal;
-      font-weight: 400;
       font-size: 16px;
       line-height: 19px;
       text-align: center;
-      letter-spacing: 4px;
       padding: 8px;
       text-align: center;
       width: 248px;
@@ -26,17 +29,21 @@ const Form = styled.form`
   }
 
   > input[type=submit] {
-    background: #919191;
+    background-color: #fffff;
     border: none;
     color: #242424;
+    cursor: pointer;
     height: 56px;
     width: 248px;
-    font-family: 'Bebas Neue';
-    font-style: normal;
-    font-weight: 400;
     font-size: 18px;
     line-height: 22px;
-    letter-spacing: 4px;
+    margin: 0 auto;
+    transition: background-color 0.3s;
+
+    &.disabled {
+      background-color: #919191;
+      cursor: not-allowed;
+    }
   }
 `;
 

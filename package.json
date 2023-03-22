@@ -9,18 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
+    "@apollo/server": "^4.5.0",
+    "@as-integrations/next": "^1.2.0",
+    "@graphql-tools/schema": "^9.0.17",
+    "@supabase/supabase-js": "^2.12.0",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "deepmerge": "^4.3.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "next": "13.2.4",
+    "randomstring": "^1.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^5.3.9",
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@types/randomstring": "^1.1.8",
     "@types/styled-components": "^5.1.26"
   }
 }

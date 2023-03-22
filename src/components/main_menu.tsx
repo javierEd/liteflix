@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styled from "styled-components";
 import { CloseIcon, PlusIcon } from "./icons";
 import { NavBar, NavBarItemNotifications, NavBarItemUser, NavBarRight } from "./nav_bar";
@@ -10,19 +9,21 @@ interface MainMenuProps {
   show: boolean;
 }
 
+const CloseButton = styled.div`
+  cursor: pointer;
+  margin-top: 11px;
+`;
+
 const MainMenuWrapper = styled.div`
   background: rgba(36, 36, 36, 0.9);
-  box-shadow: 0 0 1px 1px rgba(0,0,0,0.5);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
   height: 100%;
   margin: 0 0 0 100%;
   overflow: auto;
+  padding: 32px 100px 0 88px;
   transition: visibility 0s 0.3s, margin-left 0.3s;
   visibility: hidden;
   width: 761px;
-
-  > * {
-    margin-left: 88px;
-  }
 
   &.active {
     margin-left: calc(100% - 761px);
@@ -31,15 +32,15 @@ const MainMenuWrapper = styled.div`
   }
 `;
 
-const MainMenuItem = styled.div` 
+const MainMenuItem = styled.div`
   color: #FFFFFF;
   cursor: pointer;
   font-size: 22px;
   line-height: 22px;
-  margin: 40px 0 40px 88px;
+  margin: 40px 0 40px;
 
   &.add-movie {
-    margin: 72px 0 72px 88px;
+    margin: 72px 0 72px;
   }
 `;
 
@@ -51,9 +52,9 @@ const MainMenu = (props: MainMenuProps) => (
   <Overlay show={props.show} onClick={props.onClose}>
     <MainMenuWrapper className={props.show ? 'active' : ''}>
       <NavBar>
-        <Link href="#" onClick={props.onClose}>
+        <CloseButton onClick={props.onClose}>
           <CloseIcon />
-        </Link>
+        </CloseButton>
         <NavBarRight>
           <NavBarItemNotifications />
           <NavBarItemUser />

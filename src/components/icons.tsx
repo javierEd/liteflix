@@ -1,14 +1,14 @@
 export const ArrowDownIcon = () => (
   <svg width="13" height="8" viewBox="0 0 13 8" fill="none">
-    <path d="M1 1L6.54557 6.54557L12.0911 1" stroke="white" stroke-width="2"/>
+    <path d="M1 1L6.54557 6.54557L12.0911 1" stroke="white" strokeWidth="2"/>
   </svg>
 );
 
 export const BellIcon = () => (
   <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-    <g clip-path="url(#clip0_1_392)">
-      <path d="M20.8 8.66661C20.8 6.69643 19.9783 4.80694 18.5155 3.41382C17.0527 2.02069 15.0687 1.23804 13 1.23804C10.9314 1.23804 8.9474 2.02069 7.48462 3.41382C6.02183 4.80694 5.20005 6.69643 5.20005 8.66661C5.20005 17.3333 1.30005 19.8095 1.30005 19.8095H24.7C24.7 19.8095 20.8 17.3333 20.8 8.66661Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M15.249 23.5238C15.0204 23.899 14.6924 24.2105 14.2977 24.427C13.903 24.6435 13.4555 24.7575 13 24.7575C12.5445 24.7575 12.097 24.6435 11.7023 24.427C11.3076 24.2105 10.9795 23.899 10.751 23.5238" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+    <g clipPath="url(#clip0_1_392)">
+      <path d="M20.8 8.66661C20.8 6.69643 19.9783 4.80694 18.5155 3.41382C17.0527 2.02069 15.0687 1.23804 13 1.23804C10.9314 1.23804 8.9474 2.02069 7.48462 3.41382C6.02183 4.80694 5.20005 6.69643 5.20005 8.66661C5.20005 17.3333 1.30005 19.8095 1.30005 19.8095H24.7C24.7 19.8095 20.8 17.3333 20.8 8.66661Z" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M15.249 23.5238C15.0204 23.899 14.6924 24.2105 14.2977 24.427C13.903 24.6435 13.4555 24.7575 13 24.7575C12.5445 24.7575 12.097 24.6435 11.7023 24.427C11.3076 24.2105 10.9795 23.899 10.751 23.5238" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
     </g>
     <defs>
       <clipPath id="clip0_1_392">
@@ -20,7 +20,7 @@ export const BellIcon = () => (
 
 export const CheckIcon = () => (
   <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
-    <path d="M1 5L5 9L13 1" stroke="white" stroke-width="2"/>
+    <path d="M1 5L5 9L13 1" stroke="white" strokeWidth="2"/>
   </svg>
 );
 
@@ -33,8 +33,8 @@ export const ClipIcon = () => (
 
 export const CloseIcon = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M1.5147 1.51472L18.4853 18.4853" stroke="white" stroke-linecap="square"/>
-    <path d="M1.5147 18.4853L18.4853 1.51472" stroke="white" stroke-linecap="square"/>
+    <path d="M1.5147 1.51472L18.4853 18.4853" stroke="white" strokeLinecap="square"/>
+    <path d="M1.5147 18.4853L18.4853 1.51472" stroke="white" strokeLinecap="square"/>
   </svg>
 );
 
@@ -49,20 +49,20 @@ export const MenuIcon = () => (
 export const PlayCircleIcon = () => (
   <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
     <circle cx="20" cy="20" r="19.5" fill="#242424" fill-opacity="0.5" stroke="white"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M26.6484 20.2701L16 13V27L26.6484 20.2701Z" stroke="white"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M26.6484 20.2701L16 13V27L26.6484 20.2701Z" stroke="white"/>
   </svg>
 );
 
 export const SmallPlayCircleIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <circle cx="12" cy="12" r="11.5" fill="#242424" fill-opacity="0.5" stroke="white"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M15.9891 12.162L9.6001 7.79993V16.1999L15.9891 12.162Z" stroke="white"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M15.9891 12.162L9.6001 7.79993V16.1999L15.9891 12.162Z" stroke="white"/>
   </svg>
 );
 
 export const PlayIcon = () => (
   <svg width="11" height="16" viewBox="0 0 11 16" fill="none">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.94234 8.2363L0.625 1.875V14.125L9.94234 8.2363Z" stroke="white"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M9.94234 8.2363L0.625 1.875V14.125L9.94234 8.2363Z" stroke="white"/>
   </svg>
 );
 

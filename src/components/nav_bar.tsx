@@ -10,7 +10,7 @@ const Circle = styled.div`
 
 export const NavBar = styled.div`
   display: flex;
-  margin: 32px 100px;
+  margin-bottom: 60px;
 `;
 
 
