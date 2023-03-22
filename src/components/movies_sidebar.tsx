@@ -1,8 +1,9 @@
-import { Movie } from "@/utils/interfaces";
+import { MovieType } from "@/utils/interfaces";
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
+import { maxMobileWidth } from "./globalstyles";
 import { ArrowDownIcon, CheckIcon, PlayCircleIcon, SmallPlayCircleIcon, StarIcon } from "./icons";
 
 export const MY_MOVIES_QUERY = gql`
@@ -11,6 +12,20 @@ export const MY_MOVIES_QUERY = gql`
       id
       title
       imageBase64
+      youTubeTrailerKey
+    }
+  }
+`;
+
+export const POPULAR_MOVIES_QUERY = gql`
+  query PopularMoviesQuery {
+    popularMovies {
+      id
+      title
+      backdropPath
+      releaseYear
+      voteAverage
+      youTubeTrailerKey
     }
   }
 `;
@@ -101,6 +116,11 @@ const MovieCard = styled.div<MovieCardProps>`
     opacity: 0;
     visibility: hidden;
   }
+
+  @media (max-width: ${maxMobileWidth}) {
+    height: 172px;
+    width: 100%;
+  }
 `;
 
 const MovieCardCircle = styled.div`
@@ -148,11 +168,11 @@ const MovieCardCircle = styled.div`
 `;
 
 const MovieCardOverlay = styled.div`
-  align-content: end;
+  justify-content: end;
   border-radius: 4px;
   background: rgba(36, 36, 36, 0.7);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   height: 100%;
   opacity: 0;
   padding: 16px;
@@ -161,6 +181,10 @@ const MovieCardOverlay = styled.div`
 
   &:hover, &.active {
     opacity: 1;
+  }
+
+  > div {
+    display: flex;
   }
 `;
 
@@ -189,7 +213,6 @@ const MovieCardTitle = styled.div`
     align-self: center;
     margin-bottom: 18px;
     text-align: left;
-    width: 152px;
   }
 `;
 
@@ -205,6 +228,7 @@ const MoviesCardList = styled.div`
   position: absolute;
   transition: visibility 0s 0.3s, opacity 0.3s;
   visibility: hidden;
+  width: 100%;
 
   &.visible {
     opacity: 1;
@@ -215,14 +239,19 @@ const MoviesCardList = styled.div`
 
 const MoviesSidebarWrapper = styled.div`
   flex-shrink: 0;
-  height: 700px;
   position: relative;
   text-align: right;
   width: 220px;
+
+  @media (max-width: ${maxMobileWidth}) {
+    margin: auto;
+    max-width: 330px;
+    width: 100%;
+  }
 `;
 
 interface MoviesSidebarProps {
-  onClickMovie: (movie?: Movie) => void;
+  onClickMovie: (movie?: MovieType) => void;
   enableKeybinding: boolean;
 }
 
@@ -230,9 +259,9 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
   const [currentCard, setCurrentCard] = useState<number>(-1);
   const [currentOption, setCurrentOption] = useState<0 | 1>(0);
   const dropdownRef = useRef(null);
-  const [popularMovies, setPopularMovies] = useState<Movie[] | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { data, refetch } = useQuery(MY_MOVIES_QUERY);
+  const myMoviesQuery = useQuery(MY_MOVIES_QUERY);
+  const popularMoviesQuery = useQuery(POPULAR_MOVIES_QUERY);
 
   const onKeyDown = (event: any) => {
     const key = event.key;
@@ -254,8 +283,8 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
         }
 
         setCurrentCard(newCurrentCard);
-      } else if (key == 'Enter' && popularMovies && currentCard > -1 && currentCard < 4) {
-        props.onClickMovie(currentCard == 0 ? popularMovies[currentCard] : data?.myMovies[currentCard]);
+      } else if (key == 'Enter' && currentCard > -1 && currentCard < 4) {
+        props.onClickMovie(currentOption == 0 ? popularMoviesQuery.data.popularMovies[currentCard] : myMoviesQuery.data.myMovies[currentCard]);
       } else if (key == 'Escape') {
         setCurrentCard(-1);
       }
@@ -268,19 +297,13 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [currentCard, popularMovies, props.enableKeybinding]);
+  }, [currentCard, popularMoviesQuery, myMoviesQuery, props.enableKeybinding]);
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/3/movie/popular?api_key=6f26fd536dd6192ec8a57e94141f8b20')
-      .then((response) => response.json())
-      .then((json) => {
-        const movies = json['results'];
-
-        setPopularMovies(movies);
-      });
-
-    if (currentOption == 1) {
-      refetch();
+    if (currentOption == 0) {
+      popularMoviesQuery.refetch();
+    } else {
+      myMoviesQuery.refetch();
     }
   }, [currentOption]);
 
@@ -316,10 +339,10 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
       </DropdownMenu>
     </Dropdown>
     <MoviesCardList className={currentOption == 0 ? 'visible' : ''}>
-      {popularMovies?.slice(0, 4).map((movie, index) => (
+      {popularMoviesQuery.data?.popularMovies.map((movie: MovieType, index: number) => (
         <MovieCard
           key={movie.id}
-          backgroundImage={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
+          backgroundImage={`https://image.tmdb.org/t/p/w500/${movie.backdropPath}`}
           className={currentCard == index ? 'active': ''}
         >
           <MovieCardCircle className='unselected'>
@@ -327,23 +350,27 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
           </MovieCardCircle>
           <MovieCardTitle className='unselected'>{movie.title}</MovieCardTitle>
           <MovieCardOverlay className={currentCard == index ? 'active': ''}>
-            <MovieCardCircle className='selected' onClick={() => props.onClickMovie(movie)}>
-              <SmallPlayCircleIcon />
-            </MovieCardCircle>
-            <MovieCardTitle className='selected'>{movie.title}</MovieCardTitle>
-            <MovieCardRating>
-              <StarIcon />
-              {movie.vote_average}
-            </MovieCardRating>
-            <MovieCardYear>
-              {movie.release_date?.split('-')[0]}
-            </MovieCardYear>
+            <div>
+              <MovieCardCircle className='selected' onClick={() => props.onClickMovie(movie)}>
+                <SmallPlayCircleIcon />
+              </MovieCardCircle>
+              <MovieCardTitle className='selected'>{movie.title}</MovieCardTitle>
+            </div>
+            <div>
+              <MovieCardRating>
+                <StarIcon />
+                {movie.voteAverage}
+              </MovieCardRating>
+              <MovieCardYear>
+                {movie.releaseYear}
+              </MovieCardYear>
+            </div>
           </MovieCardOverlay>
         </MovieCard>
       ))}
     </MoviesCardList>
     <MoviesCardList className={currentOption == 1 ? 'visible' : ''}>
-      {data?.myMovies?.slice(0, 4).map((movie: any, index: number) => (
+      {myMoviesQuery.data?.myMovies.map((movie: any, index: number) => (
         <MovieCard
           key={movie.id}
           backgroundImage={movie.imageBase64}
@@ -354,10 +381,12 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
           </MovieCardCircle>
           <MovieCardTitle className='unselected'>{movie.title}</MovieCardTitle>
           <MovieCardOverlay className={currentCard == index ? 'active': ''}>
-            <MovieCardCircle className='selected' onClick={() => props.onClickMovie(movie)}>
-              <SmallPlayCircleIcon />
-            </MovieCardCircle>
-            <MovieCardTitle className='selected'>{movie.title}</MovieCardTitle>
+            <div>
+              <MovieCardCircle className='selected' onClick={() => props.onClickMovie(movie)}>
+                <SmallPlayCircleIcon />
+              </MovieCardCircle>
+              <MovieCardTitle className='selected'>{movie.title}</MovieCardTitle>
+            </div>
           </MovieCardOverlay>
         </MovieCard>
       ))}

@@ -8,6 +8,9 @@ export const classNameVisible = (isVisible: boolean) => {
   return 'hidden';
 };
 
+export const maxMobileWidth = '1023px';
+export const minDesktopWidth = '1024px';
+
 export default createGlobalStyle`
   body {
     background-color: #000000;
@@ -21,8 +24,11 @@ export default createGlobalStyle`
     transition: background-image 0.3s;
 
     > #__next {
-      background-color: rgba(0, 0, 0, 0.35);
       padding: 32px 100px;
+
+      @media (max-width: ${maxMobileWidth}) {
+        padding: 24px;
+      }
     }
   }
 
@@ -45,5 +51,17 @@ export default createGlobalStyle`
     opacity: 1;
     transition: visibility 0s, opacity 0.3s;
     visibility: visible;
+  }
+
+  .hidden-mobile {
+    @media (max-width: ${maxMobileWidth}) {
+      display: none;
+    }
+  }
+
+  .hidden-desktop {
+    @media (min-width: ${minDesktopWidth}) {
+      display: none;
+    }
   }
 `

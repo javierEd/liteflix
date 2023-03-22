@@ -6,17 +6,45 @@ import React, { useEffect, useState } from 'react'
 import MainMenu from '@/components/main_menu';
 import { MenuIcon, PlayIcon, PlusIcon } from '@/components/icons';
 import Logo from '@/components/logo';
-import { NavBar, NavBarItem, NavBarItemNotifications, NavBarItemUser, NavBarRight } from '@/components/nav_bar';
+import { NavBar, NavBarItem, NavBarItemBell, NavBarItemUser, NavBarRight, NavBarTitle } from '@/components/nav_bar';
 import HelpModal from '@/components/help_modal';
-import PlayMovieModal, { VideoProps } from '@/components/play_movie_modal';
+import PlayMovieModal from '@/components/play_movie_modal';
 import AddMovieModal from '@/components/add_movie_modal';
 import MoviesSidebar from '@/components/movies_sidebar';
-import { classNameVisible } from '@/components/globalstyles';
-import { Movie } from '@/utils/interfaces';
+import { classNameVisible, maxMobileWidth } from '@/components/globalstyles';
+import { MovieType } from '@/utils/interfaces';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/client';
+
+export const FEATURED_MOVIE_QUERY = gql`
+  query FeatureMovieQuery {
+    featuredMovie {
+      id
+      title
+      backdropPath
+      youTubeTrailerKey
+    }
+  }
+`;
+
+const BackgroundOverlay = styled.div`
+  background-color: rgba(0, 0, 0, 0.33);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: -1;
+`;
 
 const Content = styled.div`
   display: flex;
   min-height: calc(100vh - 164px);
+
+  @media (max-width: ${maxMobileWidth}) {
+    display: block;
+    margin-top: 200px;
+  }
 `;
 
 const Featured = styled.div`
@@ -30,10 +58,19 @@ const FeaturedTitle = styled.div`
   font-size: 120px;
   letter-spacing: 16px;
   text-transform: uppercase;
+
+  @media (max-width: ${maxMobileWidth}) {
+    font-size: 76px;
+    text-align: center;
+  }
 `;
 
 const FeaturedButtons = styled.div`
   display: flex;
+
+  @media (max-width: ${maxMobileWidth}) {
+    display: block;
+  }
 `;
 
 const PlayButton = styled.div`
@@ -50,6 +87,10 @@ const PlayButton = styled.div`
   &:hover {
     background-color: #363636;
   }
+
+  @media (max-width: ${maxMobileWidth}) {
+    margin: 0 auto 16px;
+  }
 `;
 
 const AddToListButton = styled.div`
@@ -65,10 +106,10 @@ const AddToListButton = styled.div`
   &:hover {
     background: rgba(66, 66, 66, 0.5);
   }
-`;
 
-const NavBarTitle = styled.div`
-  margin: auto 32px;
+  @media (max-width: ${maxMobileWidth}) {
+    margin: 0 auto 16px;
+  }
 `;
 
 const Plus = styled.span`
@@ -76,61 +117,41 @@ const Plus = styled.span`
 `;
 
 export default function Home() {
-  const [featuredMovie, setFeaturedMovie] = useState<Movie | undefined>(undefined);
   const [currentComponent, setCurrentComponent] = useState<'a' | 'h' | 'm' | undefined>(undefined);
-  const [currentVideo, setCurrentVideo] = useState<VideoProps | undefined>(undefined);
+  const [currentMovie, setCurrentMovie] = useState<MovieType | undefined>(undefined);
   const [hideSplash, setHideSplash] = useState(false);
+  const featuredMovieQuery = useQuery(FEATURED_MOVIE_QUERY);
 
   const onKeyDown = (event: any) => {
     const key = event.key.toLowerCase();
 
-    if (typeof currentComponent === 'undefined' && typeof currentVideo === 'undefined') {
+    if (typeof currentComponent === 'undefined' && typeof currentMovie === 'undefined') {
       if (['a', 'h', 'm'].includes(key)) {
         setCurrentComponent(key as 'a' | 'h' | 'm');
       } else if (key == 'p') {
-        openPlayModal(featuredMovie);
+        openPlayModal(featuredMovieQuery.data.featuredMovie);
       }
     } else if (key == 'escape') {
       setCurrentComponent(undefined);
-      setCurrentVideo(undefined);
+      setCurrentMovie(undefined);
     }
   };
 
   useEffect(() => {
+    if (typeof featuredMovieQuery.data !== 'undefined') {
+      document.body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${featuredMovieQuery.data.featuredMovie.backdropPath})`;
+      setHideSplash(true);
+    }
+
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [currentComponent, currentVideo, featuredMovie]);
+  }, [currentComponent, currentMovie, featuredMovieQuery]);
 
-  useEffect(() => {
-    fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=6f26fd536dd6192ec8a57e94141f8b20')
-      .then((response) => response.json())
-      .then((json) => {
-        const movie = json['results'][0];
-
-        document.body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${movie['backdrop_path']})`;
-
-        setFeaturedMovie(movie);
-      });
-
-    setHideSplash(true);
-  }, []);
-
-  const openPlayModal = (movie?: Movie) => {
+  const openPlayModal = (movie?: MovieType) => {
     if (typeof movie === 'undefined') { return; }
 
     setCurrentComponent(undefined);
-
-    if (typeof movie.backdrop_path !== 'undefined') {
-      fetch(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=6f26fd536dd6192ec8a57e94141f8b20`)
-        .then((response) => response.json())
-        .then((json) => {
-          const video = json['results'].find((video: VideoProps) => video.type == 'Trailer' && video.site == 'YouTube');
-
-          setCurrentVideo(video || { key: 'oU9F6J1lafY', site: 'YouTube', type: 'Video' });
-        });
-    } else {
-      setCurrentVideo({ key: 'oU9F6J1lafY', site: 'YouTube', type: 'Video' });
-    }
+    setCurrentMovie(movie);
   };
 
   return (
@@ -142,12 +163,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar>
-        <NavBarTitle>
+        <NavBarTitle className="hidden-mobile">
           <Link href="/">
             <Logo />
           </Link>
         </NavBarTitle>
-        <NavBarItem onClick={() => setCurrentComponent('a')}>
+        <NavBarItem onClick={() => setCurrentComponent('a')} className="hidden-mobile">
           <Plus>
             <PlusIcon />
           </Plus>
@@ -157,15 +178,20 @@ export default function Home() {
           <NavBarItem onClick={() => setCurrentComponent('m')}>
             <MenuIcon />
           </NavBarItem>
-          <NavBarItemNotifications />
+          <NavBarTitle className="hidden-desktop">
+            <Link href="/">
+              <Logo />
+            </Link>
+          </NavBarTitle>
+          <NavBarItemBell />
           <NavBarItemUser />
         </NavBarRight>
       </NavBar>
       <Content>
         <Featured>
-          <FeaturedTitle>{featuredMovie?.title}</FeaturedTitle>
+          <FeaturedTitle>{featuredMovieQuery.data?.featuredMovie.title}</FeaturedTitle>
           <FeaturedButtons>
-            <PlayButton onClick={() => openPlayModal(featuredMovie)}><Plus><PlayIcon /></Plus> REPRODUCIR</PlayButton>
+            <PlayButton onClick={() => openPlayModal(featuredMovieQuery.data?.featuredMovie)}><Plus><PlayIcon /></Plus> REPRODUCIR</PlayButton>
             <AddToListButton><Plus><PlusIcon /></Plus> MI LISTA</AddToListButton>
           </FeaturedButtons>
         </Featured>
@@ -179,12 +205,13 @@ export default function Home() {
       <AddMovieModal show={currentComponent == 'a'} onClose={() => setCurrentComponent(undefined)} />
       <HelpModal show={currentComponent == 'h'} onClose={() => setCurrentComponent(undefined)} />
       <PlayMovieModal
-        show={typeof currentVideo !== 'undefined'}
-        onClose={() => setCurrentVideo(undefined)} video={currentVideo}
+        show={typeof currentMovie !== 'undefined'}
+        onClose={() => setCurrentMovie(undefined)} movie={currentMovie}
       />
       <div className={`splash ${classNameVisible(!hideSplash)}`}>
         <Logo />
       </div>
+      <BackgroundOverlay />
     </>
   )
 }

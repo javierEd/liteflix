@@ -1,6 +1,9 @@
+import Link from "next/link";
 import styled from "styled-components";
-import { CloseIcon, PlusIcon } from "./icons";
-import { NavBar, NavBarItemNotifications, NavBarItemUser, NavBarRight } from "./nav_bar";
+import { maxMobileWidth } from "./globalstyles";
+import { CloseIcon, MenuIcon, PlusIcon } from "./icons";
+import Logo from "./logo";
+import { NavBar, NavBarItem, NavBarItemBell, NavBarItemUser, NavBarRight, NavBarTitle } from "./nav_bar";
 import Overlay from "./overlay";
 
 interface MainMenuProps {
@@ -12,6 +15,10 @@ interface MainMenuProps {
 const CloseButton = styled.div`
   cursor: pointer;
   margin-top: 11px;
+
+  @media (max-width: ${maxMobileWidth}) {
+    margin-top: 0;
+  }
 `;
 
 const MainMenuWrapper = styled.div`
@@ -29,6 +36,15 @@ const MainMenuWrapper = styled.div`
     margin-left: calc(100% - 761px);
     transition: visibility 0s, margin-left 0.3s;
     visibility: visible;
+  }
+
+  @media (max-width: ${maxMobileWidth}) {
+    width: 100%;
+
+    &.active {
+      margin-left: 0;
+      padding: 24px;
+    }
   }
 `;
 
@@ -56,12 +72,19 @@ const MainMenu = (props: MainMenuProps) => (
           <CloseIcon />
         </CloseButton>
         <NavBarRight>
-          <NavBarItemNotifications />
+          <NavBarTitle className="hidden-desktop">
+            <Link href="/" onClick={props.onClose}>
+              <Logo />
+            </Link>
+          </NavBarTitle>
+          <NavBarItemBell />
           <NavBarItemUser />
         </NavBarRight>
       </NavBar>
       <MainMenuItem>
-          INICIO
+          <Link href="/" onClick={props.onClose}>
+            INICIO
+          </Link>
       </MainMenuItem>
       <MainMenuItem>
           SERIES

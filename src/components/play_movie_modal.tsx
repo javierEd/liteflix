@@ -1,3 +1,4 @@
+import { MovieType, MyMovieType } from "@/utils/interfaces";
 import styled from "styled-components";
 import Modal from "./modal";
 
@@ -12,16 +13,10 @@ const PlayIframe = styled.iframe`
   width: 100%;
 `;
 
-export interface VideoProps {
-  key: string;
-  site: string;
-  type: string;
-}
-
 interface PlayMovieModalProps {
   onClose: () => void;
   show: boolean;
-  video?: VideoProps;
+  movie?: MovieType | MyMovieType;
 }
 
 const PlayMovieModal = (props: PlayMovieModalProps) => (
@@ -30,9 +25,11 @@ const PlayMovieModal = (props: PlayMovieModalProps) => (
       NO TENGO LOS DERECHOS DE TRANSMISIÓN &#128546;
     </PlayDescription>
     <PlayDescription>
-      TENDRÁS QUE CONFORMARTE CON ESTE {props.video?.type} &#128517;
+      TENDRÁS QUE CONFORMARTE CON ESTO &#128517;
     </PlayDescription>
-    <PlayIframe src={typeof props.video !== 'undefined' ? `https://www.youtube.com/embed/${props.video.key}?autoplay=1` : ''} />
+    <PlayIframe
+      src={typeof props.movie !== 'undefined' ? `https://www.youtube.com/embed/${props.movie.youTubeTrailerKey}?autoplay=1` : ''}
+    />
   </Modal>
 );
 

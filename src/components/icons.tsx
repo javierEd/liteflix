@@ -48,14 +48,14 @@ export const MenuIcon = () => (
 
 export const PlayCircleIcon = () => (
   <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-    <circle cx="20" cy="20" r="19.5" fill="#242424" fill-opacity="0.5" stroke="white"/>
+    <circle cx="20" cy="20" r="19.5" fill="#242424" fillOpacity="0.5" stroke="white"/>
     <path fillRule="evenodd" clipRule="evenodd" d="M26.6484 20.2701L16 13V27L26.6484 20.2701Z" stroke="white"/>
   </svg>
 );
 
 export const SmallPlayCircleIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <circle cx="12" cy="12" r="11.5" fill="#242424" fill-opacity="0.5" stroke="white"/>
+    <circle cx="12" cy="12" r="11.5" fill="#242424" fillOpacity="0.5" stroke="white"/>
     <path fillRule="evenodd" clipRule="evenodd" d="M15.9891 12.162L9.6001 7.79993V16.1999L15.9891 12.162Z" stroke="white"/>
   </svg>
 );

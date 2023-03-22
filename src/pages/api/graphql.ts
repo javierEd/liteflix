@@ -3,6 +3,7 @@ import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { gql } from 'graphql-tag';
+import { MovieType, MyMovieType } from '@/utils/interfaces';
 
 const typeDefs = gql`
   input MyMovieInputObject {
@@ -16,10 +17,20 @@ const typeDefs = gql`
     resource: MyMovie
   }
 
+  type Movie {
+    id: String!
+    title: String!
+    backdropPath: String!
+    releaseYear: Int!
+    voteAverage: Float!
+    youTubeTrailerKey: String!
+  }
+
   type MyMovie {
     id: String!
     title: String!
     imageBase64: String!
+    youTubeTrailerKey: String!
   }
 
   type Mutation {
@@ -27,8 +38,9 @@ const typeDefs = gql`
   }
 
   type Query {
+    featuredMovie: Movie
     myMovies: [MyMovie!]!
-    myMovie(id: ID!): MyMovie
+    popularMovies: [Movie!]!
   }
 `;
 
@@ -46,8 +58,38 @@ interface MyMovieInputObject {
   imageBase64: string;
 }
 
-interface MyMovieQueryArgs {
+interface MyMovie {
   id: string;
+  title: string;
+  image_base64: string;
+}
+
+interface TMDBMovie {
+  id: number;
+  title: string;
+  backdrop_path: string;
+  release_date: string;
+  vote_average: number;
+}
+
+interface TMDBVideo {
+  key: string;
+  site: string;
+  type: string;
+}
+
+const toMovieType = async (movie: TMDBMovie) : Promise<MovieType> => {
+  const videos = await (await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${process.env.TMDB_KEY}`)).json();
+  const video = videos.results.find((video: TMDBVideo) => video.type == 'Trailer' && video.site == 'YouTube');
+
+  return {
+    id: movie.id,
+    title: movie.title,
+    backdropPath: movie.backdrop_path,
+    releaseYear: parseInt(movie.release_date.split('-')[0]),
+    voteAverage: movie.vote_average,
+    youTubeTrailerKey: video?.key || 'oU9F6J1lafY',
+  };
 }
 
 const resolvers = {
@@ -79,23 +121,26 @@ const resolvers = {
     }
   },
   Query: {
-    async myMovies(_parent: any, _args: any, contextValue: ContextValue) {
-      const result = await contextValue.supabase.from('my_movies').select('*').eq('user_token', contextValue.token)
-        .order('created_at', { ascending: false });
+    async featuredMovie(_parent: any, _args: any, _contextValue: ContextValue) : Promise<MovieType> {
+      const movies = await (await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMDB_KEY}`)).json();
+      const movie = movies.results[0] as TMDBMovie;
 
-      return result.data?.map((movie) => ({ id: movie.id, title: movie.title, imageBase64: movie.image_base64 }));
+      return await toMovieType(movie);
     },
-    async myMovie(_parent: any, args: MyMovieQueryArgs, contextValue: ContextValue) {
+    async myMovies(_parent: any, _args: any, contextValue: ContextValue) : Promise<MyMovieType[]> {
       const result = await contextValue.supabase?.from('my_movies').select('*').eq('user_token', contextValue.token)
-        .eq('id', args.id).single();
-      const movie = result.data;
+        .order('created_at', { ascending: false}).limit(4);
+      const myMovies = result.data as MyMovie[];
 
-      if (!movie) {
-        return undefined;
-      }
-
-      return { id: movie.id, title: movie.title, imageBase64: movie.image_base64 };
+      return myMovies.map((movie) => ({
+        id: movie.id, title: movie.title, imageBase64: movie.image_base64, youTubeTrailerKey: 'oU9F6J1lafY'
+      }));
     },
+    async popularMovies(_parent: any, _args: any, _contextValue: ContextValue): Promise<MovieType[]> {
+      const movies = (await (await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_KEY}`)).json()).results as TMDBMovie[];
+
+      return await Promise.all(movies.slice(0, 4).map(async (movie) => { return await toMovieType(movie) }));
+    }
   },
 }
 
