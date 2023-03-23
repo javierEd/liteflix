@@ -31,10 +31,14 @@ const BackgroundOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.33);
   bottom: 0;
   left: 0;
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 0;
   z-index: -1;
+
+  @media (max-width: ${maxMobileWidth}) {
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(36,36,36,1) 620px);
+  }
 `;
 
 const Content = styled.div`

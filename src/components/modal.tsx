@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { ReactNode } from "react";
 import styled from "styled-components";
 import { maxMobileWidth } from "./globalstyles";
 import { CloseIcon } from "./icons";
+import Logo from "./logo";
+import { NavBar, NavBarCloseButton, NavBarItemBell, NavBarItemUser, NavBarRight, NavBarTitle } from "./nav_bar";
 import Overlay from "./overlay";
 
 const ModalBox = styled.div`
@@ -25,6 +28,7 @@ const ModalBox = styled.div`
 
     &.active {
       margin: 0;
+      padding: 24px;
     }
   }
 `;
@@ -39,9 +43,13 @@ const ModalTitle = styled.div`
   line-height: 20px;
   padding-top: 48px;
   text-align: center;
+
+  @media (max-width: ${maxMobileWidth}) {
+    font-size: 22px;
+  }
 `;
 
-const CloseButton = styled.div`
+const ModalCloseButton = styled.div`
   cursor: pointer;
   float: right;
   position: absolute;
@@ -53,6 +61,10 @@ const ModalContent = styled.div`
   font-size: 16px;
   padding: 48px 64px;
   position: relative;
+
+  @media (max-width: ${maxMobileWidth}) {
+    padding: 48px 0;
+  }
 `;
 
 interface ModalProps {
@@ -66,12 +78,26 @@ const Modal = (props: ModalProps) => (
   <Overlay show={props.show} onClick={props.onClose}>
     <ModalBox className={ props.show ? 'active' : '' }>
       <ModalHeader>
+        <NavBar className="hidden-desktop">
+          <NavBarCloseButton onClick={props.onClose}>
+            <CloseIcon />
+          </NavBarCloseButton>
+          <NavBarRight>
+            <NavBarTitle className="hidden-desktop">
+              <Link href="/" onClick={props.onClose}>
+                <Logo />
+              </Link>
+            </NavBarTitle>
+            <NavBarItemBell />
+            <NavBarItemUser />
+          </NavBarRight>
+        </NavBar>
         <ModalTitle>
           {props.title}
         </ModalTitle>
-        <CloseButton onClick={props.onClose}>
+        <ModalCloseButton onClick={props.onClose} className="hidden-mobile">
           <CloseIcon />
-        </CloseButton>
+        </ModalCloseButton>
       </ModalHeader>
       <ModalContent>
         {props.children}

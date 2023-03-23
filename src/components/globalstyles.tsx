@@ -15,16 +15,19 @@ export default createGlobalStyle`
   body {
     background-color: #000000;
     background-image: url(black.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
     color: #FFFFFF;
-    padding: 0;
-    margin: 0;
     font-family: Bebas Neue;
     letter-spacing: 4px;
+    margin: 0;
+    padding: 0;
     transition: background-image 0.3s;
 
     > #__next {
       padding: 32px 100px;
+      position: relative;
 
       @media (max-width: ${maxMobileWidth}) {
         padding: 24px;

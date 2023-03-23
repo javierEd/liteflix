@@ -1,9 +1,9 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { maxMobileWidth } from "./globalstyles";
-import { CloseIcon, MenuIcon, PlusIcon } from "./icons";
+import { CloseIcon, PlusIcon } from "./icons";
 import Logo from "./logo";
-import { NavBar, NavBarItem, NavBarItemBell, NavBarItemUser, NavBarRight, NavBarTitle } from "./nav_bar";
+import { NavBar, NavBarCloseButton, NavBarItemBell, NavBarItemUser, NavBarRight, NavBarTitle } from "./nav_bar";
 import Overlay from "./overlay";
 
 interface MainMenuProps {
@@ -11,15 +11,6 @@ interface MainMenuProps {
   onClose: () => void;
   show: boolean;
 }
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 11px;
-
-  @media (max-width: ${maxMobileWidth}) {
-    margin-top: 0;
-  }
-`;
 
 const MainMenuWrapper = styled.div`
   background: rgba(36, 36, 36, 0.9);
@@ -68,9 +59,9 @@ const MainMenu = (props: MainMenuProps) => (
   <Overlay show={props.show} onClick={props.onClose}>
     <MainMenuWrapper className={props.show ? 'active' : ''}>
       <NavBar>
-        <CloseButton onClick={props.onClose}>
+        <NavBarCloseButton onClick={props.onClose}>
           <CloseIcon />
-        </CloseButton>
+        </NavBarCloseButton>
         <NavBarRight>
           <NavBarTitle className="hidden-desktop">
             <Link href="/" onClick={props.onClose}>

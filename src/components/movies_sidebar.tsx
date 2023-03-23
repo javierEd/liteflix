@@ -74,6 +74,11 @@ const DropdownMenu = styled.div`
   width: 241px;
   z-index: 10;
 
+  @media (max-width: ${maxMobileWidth}) {
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.5);
+    width: 100%;
+  }
+
   &:before {
     content:'';
     position: absolute;
@@ -84,6 +89,10 @@ const DropdownMenu = styled.div`
     border-bottom: solid 12px #242424;
     border-left: solid 12px transparent;
     border-right: solid 12px transparent;
+
+    @media (max-width: ${maxMobileWidth}) {
+      display: none;
+    }
   }
 
   &.active {
@@ -107,6 +116,8 @@ const MovieCard = styled.div<MovieCardProps>`
   height: 146px;
   width: 220px;
   background-image: url(${(props) => props.backgroundImage});
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
   border-radius: 4px;
   margin: 20px auto;
@@ -224,8 +235,9 @@ const MovieCardYear = styled.div`
 `;
 
 const MoviesCardList = styled.div`
+  grid-row-start: 2;
+  grid-column-start: 1;
   opacity: 0;
-  position: absolute;
   transition: visibility 0s 0.3s, opacity 0.3s;
   visibility: hidden;
   width: 100%;
@@ -238,8 +250,9 @@ const MoviesCardList = styled.div`
 `;
 
 const MoviesSidebarWrapper = styled.div`
+  align-content: start;
+  display: grid;
   flex-shrink: 0;
-  position: relative;
   text-align: right;
   width: 220px;
 

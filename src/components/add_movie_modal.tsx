@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Form from "./form";
-import { classNameVisible } from "./globalstyles";
+import { classNameVisible, maxMobileWidth } from "./globalstyles";
 import { ClipIcon } from "./icons";
 import Logo from "./logo";
 import Modal from "./modal";
@@ -44,8 +44,10 @@ const Dropzone = styled.label<DropzoneProps>`
   border: 1px dashed #FFFFFF;
   cursor: pointer;
   display: block;
+  height: 93px;
+  line-height: 93px;
   opacity: 0;
-  padding: 40px 60px;
+  padding: 0 24px;
   position: absolute;
   text-align: center;
   transition: visibility 0s 0.3s, opacity 0.3s, background 0.3s;
@@ -68,7 +70,7 @@ const Dropzone = styled.label<DropzoneProps>`
 `;
 
 const DropzoneWrapper = styled.div`
-  height: 105px;
+  height: 93px;
   position: relative;
 `;
 
@@ -143,13 +145,39 @@ const SuccessButton = styled.div`
 const SuccessMessage = styled.div`
   font-size: 20px;
   line-height: 24px;
-  margin-bottom: 92px;
+  margin-bottom: 74px;
 `;
 
 const SuccessTitle = styled.div`
   font-size: 24px;
   line-height: 26px;
   margin-bottom: 24px;
+`;
+
+const TitleLabel = styled.label`
+  @media (max-width: ${maxMobileWidth}) {
+    margin-bottom: 96px;
+  }
+`;
+
+const ModalExitButton = styled.div`
+  background: rgba(36, 36, 36, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 18px;
+  height: 56px;
+  padding: 18px;
+  text-align: center;
+  width: 248px;
+  transition: background 0.3s;
+
+  &:hover {
+    background: rgba(66, 66, 66, 0.5);
+  }
+
+  @media (max-width: ${maxMobileWidth}) {
+    margin: 0 auto 16px;
+  }
 `;
 
 interface AddMovieModalProps {
@@ -274,7 +302,8 @@ const AddMovieModal = (props: AddMovieModalProps) => {
               <Clip>
                 <ClipIcon />
               </Clip>
-              AGREGÁ UN ARCHIVO O ARRASTRALO Y SOLTALO AQUÍ
+              <span className="hidden-mobile">AGREGÁ UN ARCHIVO O ARRASTRALO Y SOLTALO AQUÍ</span>
+              <span className="hidden-desktop">AGREGÁ UN ARCHIVO</span>
             </div>
             <input
               type="file"
@@ -298,10 +327,11 @@ const AddMovieModal = (props: AddMovieModalProps) => {
             </ProgressButtons>
           </ProgressBar>
         </DropzoneWrapper>
-        <label>
+        <TitleLabel>
           <input type="text" placeholder="TÍTULO" value={title} onChange={(event) => setTitle(event.target.value)} maxLength={255} />
-        </label>
+        </TitleLabel>
         <input type="submit" value="SUBIR PELÍCULA" className={isReady() ? '' : 'disabled'} />
+        <ModalExitButton onClick={props.onClose} className="hidden-desktop">SALIR</ModalExitButton>
       </Form>
       <Success className={classNameVisible(isSubmitted())}>
         <Logo />

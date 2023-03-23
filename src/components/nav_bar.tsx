@@ -14,6 +14,15 @@ export const NavBar = styled.div`
   margin-bottom: 60px;
 `;
 
+export const NavBarCloseButton = styled.div`
+  cursor: pointer;
+  margin-top: 11px;
+
+  @media (max-width: ${maxMobileWidth}) {
+    margin-top: 0;
+  }
+`;
+
 export const NavBarItem = styled.div`
   color: #FFFFFF;
   cursor: pointer;
