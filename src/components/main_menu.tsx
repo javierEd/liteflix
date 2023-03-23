@@ -14,7 +14,7 @@ interface MainMenuProps {
 }
 
 const MainMenuWrapper = styled.div`
-  background: rgba(36, 36, 36, 0.9);
+  background-color: rgba(36, 36, 36, 0.9);
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
   height: 100%;
   margin: 0 0 0 100%;
@@ -23,6 +23,10 @@ const MainMenuWrapper = styled.div`
   transition: visibility 0s 0.3s, margin-left 0.3s;
   visibility: hidden;
   width: 761px;
+
+  @media (max-width: ${maxMobileWidth}) {
+    background-color: #242424;
+  }
 
   &.active {
     margin-left: calc(100% - 761px);
