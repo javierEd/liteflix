@@ -54,6 +54,7 @@ const Dropdown = styled.div`
 
 const DropdownItem = styled.div`
   cursor: pointer;
+  font-size: 16px;
   padding: 8px 16px;
 
   &:hover {
@@ -84,7 +85,7 @@ const DropdownMenu = styled.div`
     position: absolute;
     width: 0;
     height: 0;
-    margin-left: 191px;
+    margin-left: 204px;
     margin-top: -24px;
     border-bottom: solid 12px #242424;
     border-left: solid 12px transparent;
@@ -104,7 +105,7 @@ const DropdownMenu = styled.div`
 
 const DropdownTitle = styled.div`
   cursor: pointer;
-  margin-right: 24px;
+  margin-right: 12px;
 `;
 
 interface MovieCardProps {
@@ -331,19 +332,19 @@ const MoviesSidebar = (props: MoviesSidebarProps) => {
   <MoviesSidebarWrapper onKeyDown={onKeyDown}>
     <Dropdown>
       <DropdownTitle ref={dropdownRef} onClick={openDropdown}>
-        VER: { currentOption == 0 ? 'POPULARES' : 'MIS PELÍCULAS'}
+        <span className="font-light">VER:</span> { currentOption == 0 ? 'POPULARES' : 'MIS PELÍCULAS'}
         <Arrow>
           <ArrowDownIcon />
         </Arrow>
       </DropdownTitle>
       <DropdownMenu className={showDropdown ? 'active' : ''}>
-        <DropdownItem onClick={() => setCurrentOption(0)}>
+        <DropdownItem onClick={() => setCurrentOption(0)} className={currentOption == 0 ? '' : 'font-light'}>
           POPULARES
           <Check show={currentOption == 0}>
             <CheckIcon />
           </Check>
         </DropdownItem>
-        <DropdownItem onClick={() => setCurrentOption(1)}>
+        <DropdownItem onClick={() => setCurrentOption(1)} className={currentOption == 1 ? '' : 'font-light'}>
           MIS PELÍCULAS
           <Check show={currentOption == 1}>
             <CheckIcon />

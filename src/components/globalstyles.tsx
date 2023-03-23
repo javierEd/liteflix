@@ -20,6 +20,7 @@ export default createGlobalStyle`
     background-size: cover;
     color: #FFFFFF;
     font-family: Bebas Neue;
+    font-size: 18px;
     letter-spacing: 4px;
     margin: 0;
     padding: 0;
@@ -42,6 +43,11 @@ export default createGlobalStyle`
 
   * {
     box-sizing: border-box;
+  }
+
+  .font-light {
+    font-family: Bebas Neue Pro;
+    text-transform: uppercase;
   }
 
   .hidden {

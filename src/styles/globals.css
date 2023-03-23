@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
+@font-face {
+    font-family: 'Bebas Neue Pro';
+    src: url('/BebasNeuePro-Middle.woff2') format('woff2'),
+        url('/BebasNeuePro-Middle.woff') format('woff'),
+        url('/BebasNeuePro-Middle.ttf') format('truetype');
+  }
+
 .splash {
   background-color: #000000;
   bottom: 0;

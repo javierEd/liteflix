@@ -50,6 +50,11 @@ const MainMenuItem = styled.div`
   &.add-movie {
     margin: 72px 0 72px;
   }
+
+  @media (max-width: ${maxMobileWidth}) {
+    font-size: 16px;
+    line-height: 16px;
+  }
 `;
 
 const Plus = styled.span`
@@ -82,27 +87,27 @@ const MainMenu = (props: MainMenuProps) => {
             <NavBarItemUser />
           </NavBarRight>
         </NavBar>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             <Link href="/" onClick={props.onClose}>
               INICIO
             </Link>
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             SERIES
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             PELICULAS
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             AGREGADAS RECIENTEMENTE
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             POPULARES
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             MIS PELÍCULAS
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             MI LISTA
         </MainMenuItem>
         <MainMenuItem className="add-movie" onClick={props.onClickAddMovie}>
@@ -111,7 +116,7 @@ const MainMenu = (props: MainMenuProps) => {
           </Plus>
           AGREGAR PELÍCULA
         </MainMenuItem>
-        <MainMenuItem>
+        <MainMenuItem className="font-light">
             CERRAR SESIÓN
         </MainMenuItem>
       </MainMenuWrapper>

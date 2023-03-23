@@ -28,7 +28,7 @@ export const FEATURED_MOVIE_QUERY = gql`
 `;
 
 const BackgroundOverlay = styled.div`
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.4);
   bottom: 0;
   left: 0;
   position: absolute;
@@ -206,7 +206,7 @@ export default function Home() {
       </NavBar>
       <Content>
         <Featured>
-          <FeaturedOriginal>ORIGINAL DE <Logo /></FeaturedOriginal>
+          <FeaturedOriginal className='font-light'>ORIGINAL DE <Logo /></FeaturedOriginal>
           <FeaturedTitle>{featuredMovieQuery.data?.featuredMovie.title}</FeaturedTitle>
           <FeaturedButtons>
             <PlayButton onClick={() => openPlayModal(featuredMovieQuery.data?.featuredMovie)}><Plus><PlayIcon /></Plus> REPRODUCIR</PlayButton>
