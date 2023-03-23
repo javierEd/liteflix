@@ -176,7 +176,7 @@ const ModalExitButton = styled.div`
   }
 
   @media (max-width: ${maxMobileWidth}) {
-    margin: 0 auto 16px;
+    margin: 24px auto;
   }
 `;
 
