@@ -7,8 +7,8 @@ import GlobalStyle from '../components/globalstyles'
 
 const theme: DefaultTheme = {
   colors: {
-    primary: '#111',
-    secondary: '#0070f3',
+    primary: '#242424',
+    secondary: '#000000',
   },
 }
 
@@ -16,8 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
   return <ApolloProvider client={apolloClient}>
     <ThemeProvider theme={theme}>
-        <GlobalStyle />
-    <Component {...pageProps} />
+      <GlobalStyle />
+      <Component {...pageProps} />
     </ThemeProvider>
   </ApolloProvider>;
 }

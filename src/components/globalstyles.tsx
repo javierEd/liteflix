@@ -58,13 +58,13 @@ export default createGlobalStyle`
 
   .hidden-mobile {
     @media (max-width: ${maxMobileWidth}) {
-      display: none;
+      display: none !important;
     }
   }
 
   .hidden-desktop {
     @media (min-width: ${minDesktopWidth}) {
-      display: none;
+      display: none !important;
     }
   }
 `
