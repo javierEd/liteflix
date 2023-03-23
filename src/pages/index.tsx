@@ -47,7 +47,7 @@ const Content = styled.div`
 
   @media (max-width: ${maxMobileWidth}) {
     display: block;
-    margin-top: 200px;
+    margin-top: 214px;
   }
 `;
 
@@ -74,6 +74,19 @@ const FeaturedButtons = styled.div`
 
   @media (max-width: ${maxMobileWidth}) {
     display: block;
+  }
+`;
+
+const FeaturedOriginal = styled.div`
+  font-size: 20px;
+
+  > svg {
+    height: 18px;
+    width: 90px;
+  }
+
+  @media (max-width: ${maxMobileWidth}) {
+    text-align: center;
   }
 `;
 
@@ -193,6 +206,7 @@ export default function Home() {
       </NavBar>
       <Content>
         <Featured>
+          <FeaturedOriginal>ORIGINAL DE <Logo /></FeaturedOriginal>
           <FeaturedTitle>{featuredMovieQuery.data?.featuredMovie.title}</FeaturedTitle>
           <FeaturedButtons>
             <PlayButton onClick={() => openPlayModal(featuredMovieQuery.data?.featuredMovie)}><Plus><PlayIcon /></Plus> REPRODUCIR</PlayButton>
