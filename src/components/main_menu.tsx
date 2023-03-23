@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { maxMobileWidth } from "./globalstyles";
 import { CloseIcon, PlusIcon } from "./icons";
@@ -55,57 +56,67 @@ const Plus = styled.span`
   margin-right: 16px;
 `;
 
-const MainMenu = (props: MainMenuProps) => (
-  <Overlay show={props.show} onClick={props.onClose}>
-    <MainMenuWrapper className={props.show ? 'active' : ''}>
-      <NavBar>
-        <NavBarCloseButton onClick={props.onClose}>
-          <CloseIcon />
-        </NavBarCloseButton>
-        <NavBarRight>
-          <NavBarTitle className="hidden-desktop">
+const MainMenu = (props: MainMenuProps) => {
+  useEffect(() => {
+    if (props.show) {
+      document.body.style.overflowY = 'hidden';
+    }
+
+    return () => { document.body.style.overflowY = 'auto'; };
+  }, [props.show]);
+
+  return (
+    <Overlay show={props.show} onClick={props.onClose}>
+      <MainMenuWrapper className={props.show ? 'active' : ''}>
+        <NavBar>
+          <NavBarCloseButton onClick={props.onClose}>
+            <CloseIcon />
+          </NavBarCloseButton>
+          <NavBarRight>
+            <NavBarTitle className="hidden-desktop">
+              <Link href="/" onClick={props.onClose}>
+                <Logo />
+              </Link>
+            </NavBarTitle>
+            <NavBarItemBell />
+            <NavBarItemUser />
+          </NavBarRight>
+        </NavBar>
+        <MainMenuItem>
             <Link href="/" onClick={props.onClose}>
-              <Logo />
+              INICIO
             </Link>
-          </NavBarTitle>
-          <NavBarItemBell />
-          <NavBarItemUser />
-        </NavBarRight>
-      </NavBar>
-      <MainMenuItem>
-          <Link href="/" onClick={props.onClose}>
-            INICIO
-          </Link>
-      </MainMenuItem>
-      <MainMenuItem>
-          SERIES
-      </MainMenuItem>
-      <MainMenuItem>
-          PELICULAS
-      </MainMenuItem>
-      <MainMenuItem>
-          AGREGADAS RECIENTEMENTE
-      </MainMenuItem>
-      <MainMenuItem>
-          POPULARES
-      </MainMenuItem>
-      <MainMenuItem>
-          MIS PELÍCULAS
-      </MainMenuItem>
-      <MainMenuItem>
-          MI LISTA
-      </MainMenuItem>
-      <MainMenuItem className="add-movie" onClick={props.onClickAddMovie}>
-        <Plus>
-          <PlusIcon />
-        </Plus>
-        AGREGAR PELÍCULA
-      </MainMenuItem>
-      <MainMenuItem>
-          CERRAR SESIÓN
-      </MainMenuItem>
-    </MainMenuWrapper>
-  </Overlay>
-);
+        </MainMenuItem>
+        <MainMenuItem>
+            SERIES
+        </MainMenuItem>
+        <MainMenuItem>
+            PELICULAS
+        </MainMenuItem>
+        <MainMenuItem>
+            AGREGADAS RECIENTEMENTE
+        </MainMenuItem>
+        <MainMenuItem>
+            POPULARES
+        </MainMenuItem>
+        <MainMenuItem>
+            MIS PELÍCULAS
+        </MainMenuItem>
+        <MainMenuItem>
+            MI LISTA
+        </MainMenuItem>
+        <MainMenuItem className="add-movie" onClick={props.onClickAddMovie}>
+          <Plus>
+            <PlusIcon />
+          </Plus>
+          AGREGAR PELÍCULA
+        </MainMenuItem>
+        <MainMenuItem>
+            CERRAR SESIÓN
+        </MainMenuItem>
+      </MainMenuWrapper>
+    </Overlay>
+  );
+}
 
 export default MainMenu;

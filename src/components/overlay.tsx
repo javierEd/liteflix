@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface OverlayProps {
   children?: ReactNode;
+  hasOverflow?: boolean;
   onClick?: MouseEventHandler<HTMLElement>;
   show: boolean;
 }
@@ -19,7 +20,6 @@ const OverlayWrapper = styled.div`
 
   &.active {
     background-color: rgba(36, 36, 36, 0.7);
-    overflow: auto;
     transition: z-index 0s, background-color 0.3s;
     z-index: 0;
   }
@@ -33,6 +33,7 @@ const Overlay = (props: OverlayProps) => {
       ref={overlayRef}
       className={ props.show ? 'active' : '' }
       onClick={(event) => { if (props.onClick && overlayRef.current == event.target) { props.onClick(event); } }}
+      style={{ overflow: (props.show && props.hasOverflow ? 'auto' : 'hidden') }}
     >
       {props.children}
     </OverlayWrapper>

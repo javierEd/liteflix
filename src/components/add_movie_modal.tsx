@@ -134,6 +134,7 @@ const Success = styled.div`
 const SuccessButton = styled.div`
     background-color: #ffffff;
     color: #242424;
+    cursor: pointer;
     height: 56px;
     width: 248px;
     font-size: 18px;

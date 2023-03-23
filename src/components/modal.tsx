@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import { maxMobileWidth } from "./globalstyles";
 import { CloseIcon } from "./icons";
@@ -24,6 +24,7 @@ const ModalBox = styled.div`
 
   @media (max-width: ${maxMobileWidth}) {
     height: 100vh;
+    overflow: auto;
     width: 100%;
 
     &.active {
@@ -74,36 +75,57 @@ interface ModalProps {
   title: string;
 }
 
-const Modal = (props: ModalProps) => (
-  <Overlay show={props.show} onClick={props.onClose}>
-    <ModalBox className={ props.show ? 'active' : '' }>
-      <ModalHeader>
-        <NavBar className="hidden-desktop">
-          <NavBarCloseButton onClick={props.onClose}>
+const Modal = (props: ModalProps) => {
+  const onKeyDown = (event: any) => {
+    if (event.key == 'Escape') {
+      props.onClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (props.show) {
+      document.body.style.overflowY = 'hidden';
+    }
+
+    return () => { document.body.style.overflowY = 'auto'; };
+  }, [props.show]);
+
+ return (
+    <Overlay show={props.show} onClick={props.onClose} hasOverflow={props.show}>
+      <ModalBox className={ props.show ? 'active' : '' }>
+        <ModalHeader>
+          <NavBar className="hidden-desktop">
+            <NavBarCloseButton onClick={props.onClose}>
+              <CloseIcon />
+            </NavBarCloseButton>
+            <NavBarRight>
+              <NavBarTitle className="hidden-desktop">
+                <Link href="/" onClick={props.onClose}>
+                  <Logo />
+                </Link>
+              </NavBarTitle>
+              <NavBarItemBell />
+              <NavBarItemUser />
+            </NavBarRight>
+          </NavBar>
+          <ModalTitle>
+            {props.title}
+          </ModalTitle>
+          <ModalCloseButton onClick={props.onClose} className="hidden-mobile">
             <CloseIcon />
-          </NavBarCloseButton>
-          <NavBarRight>
-            <NavBarTitle className="hidden-desktop">
-              <Link href="/" onClick={props.onClose}>
-                <Logo />
-              </Link>
-            </NavBarTitle>
-            <NavBarItemBell />
-            <NavBarItemUser />
-          </NavBarRight>
-        </NavBar>
-        <ModalTitle>
-          {props.title}
-        </ModalTitle>
-        <ModalCloseButton onClick={props.onClose} className="hidden-mobile">
-          <CloseIcon />
-        </ModalCloseButton>
-      </ModalHeader>
-      <ModalContent>
-        {props.children}
-      </ModalContent>
-   </ModalBox>
-  </Overlay>
-);
+          </ModalCloseButton>
+        </ModalHeader>
+        <ModalContent>
+          {props.children}
+        </ModalContent>
+     </ModalBox>
+    </Overlay>
+  );
+}
 
 export default Modal;
